@@ -35,9 +35,33 @@ func TestDivisionKRW(t *testing.T) {
 	}
 }
 
+func TestAddUsdAndEur(t *testing.T) {
+	usd := Money{
+		amount:     5,
+		currency:   "USD",
+		ratioToUSD: 1,
+	}
+
+	eur := Money{
+		amount:     10,
+		currency:   "EUR",
+		ratioToUSD: 1.2,
+	}
+
+	result := usd.Adds(eur)
+	if result.amount != 17 {
+		t.Errorf("Expected 17, got [%f]", result.amount)
+	}
+
+	if result.currency != "USD" {
+		t.Errorf("Exptected USD, got [%s]", result.currency)
+	}
+}
+
 type Money struct {
-	amount   float32
-	currency string
+	amount     float32
+	currency   string
+	ratioToUSD float32
 }
 
 func (m Money) Times(n float32) Money {
@@ -46,4 +70,12 @@ func (m Money) Times(n float32) Money {
 
 func (m Money) Divides(n float32) Money {
 	return Money{amount: m.amount / n, currency: m.currency}
+}
+
+func (m Money) Adds(o Money) Money {
+	return Money{
+		amount:     m.amount + o.amount*o.ratioToUSD,
+		currency:   m.currency,
+		ratioToUSD: m.ratioToUSD,
+	}
 }

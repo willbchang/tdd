@@ -4,7 +4,8 @@ import "testing"
 
 func TestMultiplication(t *testing.T) {
 	fiver := Dollar{
-		amount: 5,
+		amount:   5,
+		currency: "USD",
 	}
 	tenner := fiver.Times(2)
 	if tenner.amount != 10 {
@@ -13,7 +14,8 @@ func TestMultiplication(t *testing.T) {
 }
 
 type Dollar struct {
-	amount int
+	amount   int
+	currency string
 }
 
 func (d Dollar) Times(n int) Dollar {

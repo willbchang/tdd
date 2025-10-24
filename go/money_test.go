@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestMultiplication(t *testing.T) {
-	fiver := Dollar{
+	fiver := Money{
 		amount:   5,
 		currency: "USD",
 	}
@@ -13,11 +13,22 @@ func TestMultiplication(t *testing.T) {
 	}
 }
 
-type Dollar struct {
+func TestMultiplicationInEuro(t *testing.T) {
+	money := Money{
+		amount:   10,
+		currency: "EUR",
+	}
+	result := money.Times(2)
+	if result.amount != 20 {
+		t.Errorf("Expected 20, got[%d]", result.amount)
+	}
+}
+
+type Money struct {
 	amount   int
 	currency string
 }
 
-func (d Dollar) Times(n int) Dollar {
-	return Dollar{amount: d.amount * n}
+func (d Money) Times(n int) Money {
+	return Money{amount: d.amount * n, currency: d.currency}
 }

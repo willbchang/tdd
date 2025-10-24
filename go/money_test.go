@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"math"
+	"testing"
+)
 
 func TestMultiplication(t *testing.T) {
 	fiver := Money{
@@ -58,17 +61,40 @@ func TestAddUsdAndEur(t *testing.T) {
 	}
 }
 
-type Money struct {
-	amount     float32
-	currency   string
-	ratioToUSD float32
+func TestAddUsdAndKrwOutputKrw(t *testing.T) {
+	usd := Money{
+		amount:     1,
+		currency:   "USD",
+		ratioToUSD: 1,
+	}
+
+	krw := Money{
+		amount:     1100,
+		currency:   "KRW",
+		ratioToUSD: 0.000909,
+	}
+
+	result := usd.AddsTo(krw)
+	if result.amount != 2200 {
+		t.Errorf("Expected 2200, got [%f]", result.amount)
+	}
+
+	if result.currency != "KRW" {
+		t.Errorf("Exptected KRW, got [%s]", result.currency)
+	}
 }
 
-func (m Money) Times(n float32) Money {
+type Money struct {
+	amount     float64
+	currency   string
+	ratioToUSD float64
+}
+
+func (m Money) Times(n float64) Money {
 	return Money{amount: m.amount * n, currency: m.currency}
 }
 
-func (m Money) Divides(n float32) Money {
+func (m Money) Divides(n float64) Money {
 	return Money{amount: m.amount / n, currency: m.currency}
 }
 
@@ -77,5 +103,13 @@ func (m Money) Adds(o Money) Money {
 		amount:     m.amount + o.amount*o.ratioToUSD,
 		currency:   m.currency,
 		ratioToUSD: m.ratioToUSD,
+	}
+}
+
+func (m Money) AddsTo(o Money) Money {
+	return Money{
+		amount:     math.Round(m.amount/o.ratioToUSD) + o.amount,
+		currency:   o.currency,
+		ratioToUSD: o.ratioToUSD,
 	}
 }

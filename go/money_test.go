@@ -6,120 +6,56 @@ import (
 )
 
 func TestMultiplication(t *testing.T) {
-	fiver := Money{
-		amount:   5,
-		currency: "USD",
-	}
+	fiver := USD(5)
 	actualResult := fiver.Times(2)
-	expectedResult := Money{
-		amount:   10,
-		currency: "USD",
-	}
+	expectedResult := USD(10)
 	expectedResult.Equal(t, actualResult)
 }
 
 func TestMultiplicationInEuro(t *testing.T) {
-	money := Money{
-		amount:   10,
-		currency: "EUR",
-	}
+	money := EUR(10)
 	actualResult := money.Times(2)
-	expectedResult := Money{
-		amount:   20,
-		currency: "EUR",
-	}
+	expectedResult := EUR(20)
 	expectedResult.Equal(t, actualResult)
 }
 
 func TestDivisionKRW(t *testing.T) {
-	money := Money{
-		amount:   4002,
-		currency: "KRW",
-	}
+	money := KRW(4002)
 	actualResult := money.Divides(4)
-	expectedResult := Money{
-		amount:   1000.5,
-		currency: "KRW",
-	}
+	expectedResult := KRW(1000.5)
 	expectedResult.Equal(t, actualResult)
 }
 
 func TestAddUsdAndEur(t *testing.T) {
-	usd := Money{
-		amount:     5,
-		currency:   "USD",
-		ratioToUSD: 1,
-	}
-
-	eur := Money{
-		amount:     10,
-		currency:   "EUR",
-		ratioToUSD: 1.2,
-	}
-
+	usd := USD(5)
+	eur := EUR(10)
 	actualResult := usd.Adds(eur)
-	expectedResult := Money{17, "USD", 1}
+	expectedResult := USD(17)
 	expectedResult.Equal(t, actualResult)
 
 }
 
 func TestAddUsdAndKrwOutputKrw(t *testing.T) {
-	usd := Money{
-		amount:     1,
-		currency:   "USD",
-		ratioToUSD: 1,
-	}
-
-	krw := Money{
-		amount:     1100,
-		currency:   "KRW",
-		ratioToUSD: 0.000909,
-	}
-
+	usd := USD(1)
+	krw := KRW(1100)
 	actualResult := usd.AddsTo(krw)
-	expectedResult := Money{2200.11, "KRW", 0.000909}
+	expectedResult := KRW(2200.11)
 	expectedResult.Equal(t, actualResult)
 }
 
 func TestAddEurAndKrw(t *testing.T) {
-	eur := Money{
-		amount:     10,
-		currency:   "EUR",
-		ratioToUSD: 1.2,
-	}
-	krw := Money{
-		amount:     4002,
-		currency:   "KRW",
-		ratioToUSD: 0.000909,
-	}
-
+	eur := EUR(10)
+	krw := KRW(4002)
 	actualResult := eur.Adds(krw)
-	expectedResult := Money{
-		amount:     13.03,
-		currency:   "EUR",
-		ratioToUSD: 1.2,
-	}
+	expectedResult := EUR(13.03)
 	expectedResult.Equal(t, actualResult)
 }
 
 func TestAddEurToKrw(t *testing.T) {
-	eur := Money{
-		amount:     10,
-		currency:   "EUR",
-		ratioToUSD: 1.2,
-	}
-	krw := Money{
-		amount:     4002,
-		currency:   "KRW",
-		ratioToUSD: 0.000909,
-	}
-
+	eur := EUR(10)
+	krw := KRW(4002)
 	actualResult := eur.AddsTo(krw)
-	expectedResult := Money{
-		amount:     17203.32,
-		currency:   "KRW",
-		ratioToUSD: 0.000909,
-	}
+	expectedResult := KRW(17203.32)
 	expectedResult.Equal(t, actualResult)
 }
 
@@ -127,6 +63,30 @@ type Money struct {
 	amount     float64
 	currency   string
 	ratioToUSD float64
+}
+
+func USD(amount float64) Money {
+	return Money{
+		amount:     amount,
+		currency:   "USD",
+		ratioToUSD: 1,
+	}
+}
+
+func EUR(amount float64) Money {
+	return Money{
+		amount:     amount,
+		currency:   "EUR",
+		ratioToUSD: 1.2,
+	}
+}
+
+func KRW(amount float64) Money {
+	return Money{
+		amount:     amount,
+		currency:   "KRW",
+		ratioToUSD: 0.000909,
+	}
 }
 
 func (m Money) Times(n float64) Money {

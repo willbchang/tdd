@@ -81,6 +81,27 @@ func TestAddUsdAndKrwOutputKrw(t *testing.T) {
 	expectedResult.Equal(t, actualResult)
 }
 
+func TestAddEurAndKrw(t *testing.T) {
+	eur := Money{
+		amount:     10,
+		currency:   "EUR",
+		ratioToUSD: 1.2,
+	}
+	krw := Money{
+		amount:     4002,
+		currency:   "KRW",
+		ratioToUSD: 0.000909,
+	}
+
+	actualResult := eur.Adds(krw)
+	expectedResult := Money{
+		amount:     13.03,
+		currency:   "EUR",
+		ratioToUSD: 1.2,
+	}
+	expectedResult.Equal(t, actualResult)
+}
+
 type Money struct {
 	amount     float64
 	currency   string
@@ -96,8 +117,11 @@ func (m Money) Divides(n float64) Money {
 }
 
 func (m Money) Adds(o Money) Money {
+	amount := m.amount + o.amount*o.ratioToUSD/m.ratioToUSD
+	amount = math.Round(amount*100) / 100
+
 	return Money{
-		amount:     m.amount + o.amount*o.ratioToUSD,
+		amount:     amount,
 		currency:   m.currency,
 		ratioToUSD: m.ratioToUSD,
 	}

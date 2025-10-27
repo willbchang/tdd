@@ -37,7 +37,7 @@ func KRW(amount float64) Money {
 
 func (m Money) Times(n float64) Money {
 	return Money{
-		amount:     m.amount * n,
+		amount:     math.Round(m.amount*n*100) / 100,
 		currency:   m.currency,
 		ratioToUSD: m.ratioToUSD,
 	}
@@ -45,7 +45,7 @@ func (m Money) Times(n float64) Money {
 
 func (m Money) Divides(n float64) Money {
 	return Money{
-		amount:     m.amount / n,
+		amount:     math.Round(m.amount/n*100) / 100,
 		currency:   m.currency,
 		ratioToUSD: m.ratioToUSD,
 	}

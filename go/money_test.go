@@ -10,9 +10,13 @@ func TestMultiplication(t *testing.T) {
 		amount:   5,
 		currency: "USD",
 	}
-	tenner := fiver.Times(2)
-	if tenner.amount != 10 {
-		t.Errorf("Expected 10, got [%f]", tenner.amount)
+	actualResult := fiver.Times(2)
+	expectedResult := Money{
+		amount:   10,
+		currency: "USD",
+	}
+	if actualResult != expectedResult {
+		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
 	}
 }
 
@@ -21,9 +25,13 @@ func TestMultiplicationInEuro(t *testing.T) {
 		amount:   10,
 		currency: "EUR",
 	}
-	result := money.Times(2)
-	if result.amount != 20 {
-		t.Errorf("Expected 20, got[%f]", result.amount)
+	actualResult := money.Times(2)
+	expectedResult := Money{
+		amount:   20,
+		currency: "EUR",
+	}
+	if actualResult != expectedResult {
+		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
 	}
 }
 
@@ -32,9 +40,13 @@ func TestDivisionKRW(t *testing.T) {
 		amount:   4002,
 		currency: "KRW",
 	}
-	result := money.Divides(4)
-	if result.amount != 1000.5 {
-		t.Errorf("Expected 1000.5, got [%f]", result.amount)
+	actualResult := money.Divides(4)
+	expectedResult := Money{
+		amount:   1000.5,
+		currency: "KRW",
+	}
+	if actualResult != expectedResult {
+		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
 	}
 }
 
@@ -51,14 +63,12 @@ func TestAddUsdAndEur(t *testing.T) {
 		ratioToUSD: 1.2,
 	}
 
-	result := usd.Adds(eur)
-	if result.amount != 17 {
-		t.Errorf("Expected 17, got [%f]", result.amount)
+	actualResult := usd.Adds(eur)
+	expectedResult := Money{17, "USD", 1}
+	if actualResult != expectedResult {
+		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
 	}
 
-	if result.currency != "USD" {
-		t.Errorf("Exptected USD, got [%s]", result.currency)
-	}
 }
 
 func TestAddUsdAndKrwOutputKrw(t *testing.T) {
@@ -74,14 +84,12 @@ func TestAddUsdAndKrwOutputKrw(t *testing.T) {
 		ratioToUSD: 0.000909,
 	}
 
-	result := usd.AddsTo(krw)
-	if result.amount != 2200 {
-		t.Errorf("Expected 2200, got [%f]", result.amount)
+	actualResult := usd.AddsTo(krw)
+	expectedResult := Money{2200, "KRW", 0.000909}
+	if actualResult != expectedResult {
+		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
 	}
 
-	if result.currency != "KRW" {
-		t.Errorf("Exptected KRW, got [%s]", result.currency)
-	}
 }
 
 type Money struct {

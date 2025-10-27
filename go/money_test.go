@@ -21,7 +21,7 @@ func TestAddUsdAndEur(t *testing.T) {
 	USD(5).Adds(EUR(10)).Equal(t, USD(17))
 }
 
-func TestAddUsdAndKrwOutputKrw(t *testing.T) {
+func TestAddUsdToKrw(t *testing.T) {
 	USD(1).AddsTo(KRW(1100)).Equal(t, KRW(2200.11))
 }
 
@@ -79,6 +79,9 @@ func (m Money) Divides(n float64) Money {
 	}
 }
 
+// (ax + by) / a
+// ax / a + by / a
+// x + by / a
 func (m Money) Adds(o Money) Money {
 	amount := m.amount + o.amount*o.ratioToUSD/m.ratioToUSD
 	amount = math.Round(amount*100) / 100
@@ -90,6 +93,9 @@ func (m Money) Adds(o Money) Money {
 	}
 }
 
+// (ax + by) / b
+// ax / b + by / b
+// ax / b + y
 func (m Money) AddsTo(o Money) Money {
 	amount := m.amount*m.ratioToUSD/o.ratioToUSD + o.amount
 	amount = math.Round(amount*100) / 100

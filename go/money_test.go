@@ -130,11 +130,19 @@ type Money struct {
 }
 
 func (m Money) Times(n float64) Money {
-	return Money{amount: m.amount * n, currency: m.currency}
+	return Money{
+		amount:     m.amount * n,
+		currency:   m.currency,
+		ratioToUSD: m.ratioToUSD,
+	}
 }
 
 func (m Money) Divides(n float64) Money {
-	return Money{amount: m.amount / n, currency: m.currency}
+	return Money{
+		amount:     m.amount / n,
+		currency:   m.currency,
+		ratioToUSD: m.ratioToUSD,
+	}
 }
 
 func (m Money) Adds(o Money) Money {

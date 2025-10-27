@@ -33,6 +33,10 @@ func TestAddEurToKrw(t *testing.T) {
 	EUR(10).AddsTo(KRW(4002)).Equal(t, KRW(17203.32))
 }
 
+func TestAddUsdAndEurToKrw(t *testing.T) {
+	USD(10).Adds(EUR(10)).AddsTo(KRW(1000)).Equal(t, KRW(25202.42))
+}
+
 type Money struct {
 	amount     float64
 	currency   string

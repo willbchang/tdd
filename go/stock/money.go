@@ -65,20 +65,6 @@ func (m Money) Adds(o Money) Money {
 	}
 }
 
-// AddsTo (ax + by) / b ->
-// ax / b + by / b ->
-// ax / b + y
-func (m Money) AddsTo(o Money) Money {
-	amount := m.amount*m.ratioToUSD/o.ratioToUSD + o.amount
-	amount = math.Round(amount*100) / 100
-
-	return Money{
-		amount:     amount,
-		currency:   o.currency,
-		ratioToUSD: o.ratioToUSD,
-	}
-}
-
 func (m Money) Equal(n Money, t *testing.T) {
 	if m != n {
 		t.Errorf("Expected [%+v], got [%+v]", m, n)

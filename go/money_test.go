@@ -19,7 +19,7 @@ func TestAddUsdAndEur(t *testing.T) {
 }
 
 func TestAddUsdToKrw(t *testing.T) {
-	USD(1).AddsTo(KRW(1100)).Equal(KRW(2200.11), t)
+	KRW(1100).Adds(USD(1)).Equal(KRW(2200.11), t)
 }
 
 func TestAddEurAndKrw(t *testing.T) {
@@ -27,5 +27,5 @@ func TestAddEurAndKrw(t *testing.T) {
 }
 
 func TestAddUsdAndEurToKrw(t *testing.T) {
-	USD(10).Adds(EUR(10)).AddsTo(KRW(1000)).Equal(KRW(25202.42), t)
+	KRW(1000).Adds(USD(10)).Adds(EUR(10)).Equal(KRW(25202.42), t)
 }

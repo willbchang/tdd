@@ -15,9 +15,7 @@ func TestMultiplication(t *testing.T) {
 		amount:   10,
 		currency: "USD",
 	}
-	if actualResult != expectedResult {
-		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
-	}
+	expectedResult.Equal(t, actualResult)
 }
 
 func TestMultiplicationInEuro(t *testing.T) {
@@ -30,9 +28,7 @@ func TestMultiplicationInEuro(t *testing.T) {
 		amount:   20,
 		currency: "EUR",
 	}
-	if actualResult != expectedResult {
-		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
-	}
+	expectedResult.Equal(t, actualResult)
 }
 
 func TestDivisionKRW(t *testing.T) {
@@ -45,9 +41,7 @@ func TestDivisionKRW(t *testing.T) {
 		amount:   1000.5,
 		currency: "KRW",
 	}
-	if actualResult != expectedResult {
-		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
-	}
+	expectedResult.Equal(t, actualResult)
 }
 
 func TestAddUsdAndEur(t *testing.T) {
@@ -65,9 +59,7 @@ func TestAddUsdAndEur(t *testing.T) {
 
 	actualResult := usd.Adds(eur)
 	expectedResult := Money{17, "USD", 1}
-	if actualResult != expectedResult {
-		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
-	}
+	expectedResult.Equal(t, actualResult)
 
 }
 
@@ -86,10 +78,7 @@ func TestAddUsdAndKrwOutputKrw(t *testing.T) {
 
 	actualResult := usd.AddsTo(krw)
 	expectedResult := Money{2200, "KRW", 0.000909}
-	if actualResult != expectedResult {
-		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
-	}
-
+	expectedResult.Equal(t, actualResult)
 }
 
 type Money struct {
@@ -119,5 +108,11 @@ func (m Money) AddsTo(o Money) Money {
 		amount:     math.Round(m.amount/o.ratioToUSD) + o.amount,
 		currency:   o.currency,
 		ratioToUSD: o.ratioToUSD,
+	}
+}
+
+func (m Money) Equal(t *testing.T, n Money) {
+	if m != n {
+		t.Errorf("Expected [%+v], got [%+v]", m, n)
 	}
 }
